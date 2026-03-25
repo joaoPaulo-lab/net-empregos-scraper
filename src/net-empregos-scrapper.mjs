@@ -1,5 +1,5 @@
 import { chromium } from 'playwright'
-import fs, { link } from 'fs';
+import fs from 'fs';
 import readline from 'readline/promises';
 import { stdin as input, stdout as output } from 'process';
 
@@ -44,7 +44,7 @@ async function fazerPergunta(pergunta){
 
 async function pegarLinks(page) {
     let linkVagas = [];
-    await page.pause();
+
     const jobs = page.locator('.job-item');
     console.log(jobs);
     let quantidadeVagas = await jobs.count();
@@ -55,9 +55,19 @@ async function pegarLinks(page) {
         console.log(`Processando vaga ${i + 1} de ${quantidadeVagas}`);
 
         const job = await jobs.nth(i);
-        let href = await job.locator('a.oferta-link').first().getAttribute('href');
+        
+        try {
 
-        linkVagas.push(href);
+            let href = await job.locator('a.oferta-link').first().getAttribute('href');
+            
+            linkVagas.push(href);
+
+        }catch(error){
+
+            console.log(`Somente ${i} vagas atendem os parametros.`)
+            break;
+            
+        }
     }
     return linkVagas;
 }
@@ -101,13 +111,13 @@ async function run() {
     //Separa o objeto escolhido.
     const zonaEscolhida =  zonas.find(zona=>zona.index == parseInt(escolhaZona))
 
-    const escolhaChave = await fazerPergunta('Escolha uma palavra chave ex: Suporte, Vendas...')
+    const escolhaChave = await fazerPergunta('Escolha uma palavra chave ex: Suporte, Vendas: ')
     let chave = (await escolhaChave).replaceAll(' ','+')
 
 
     console.log(`A procurar vagas de ${categoriaEscolhida.titulo} com ${escolhaChave} na zona de ${zonaEscolhida.titulo}...`);
     
-    // await page.pause()
+    
     
     
     await formChave.fill(escolhaChave);
@@ -115,7 +125,7 @@ async function run() {
     await formZonas.selectOption(zonaEscolhida.valor);
     
     await page.getByRole('button', { name: ' Pesquisar' }).click();
-    
+    await page.pause();
 
     //Pega os links da pagina inical
     
@@ -159,17 +169,8 @@ async function run() {
         
     }
 
-
-   
-    //2 e 4 sao os indices onde estao o numero da pagina atual e o numero total de paginas, respectivamente
-    //Para fins de debug
-    // console.log('Paginacao:', paginacaoSeparada);
     
-
-    
-
     //Faz um loop pelas paginas e coleta os links
-    //TODO try catch para pesquisas que retornam somente uma pag.
 
    
     
@@ -212,7 +213,7 @@ async function run() {
             continue;
 
         }
-        // await newPage.pause()        
+          
         
     }   
     await browser.close()
