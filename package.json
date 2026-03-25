@@ -1,0 +1,15 @@
+{
+  "name": "net-empregos-scrapper",
+  "version": "1.0.0",
+  "description": "Scrapper para o website do netempregos",
+  "license": "ISC",
+  "author": "JP",
+  "type": "mjs",
+  "main": "net-empregos-scrapper.mjs",
+  "scripts": {
+    "test": "node net-empregos-scrapper.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.58.2"
+  }
+}
