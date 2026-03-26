@@ -1,4 +1,4 @@
-# net-empregos-scrapper
+# net-empregos-scraper
 Scrapper de dados do site net-empregos que retorna JSON's
 
 O programa acede ao website, pergunta ao utilizador os parametros da busca e faz um scraping das vagas.
