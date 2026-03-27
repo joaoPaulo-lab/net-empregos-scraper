@@ -59,7 +59,7 @@ async function pegarLinks(page) {
         const job = await jobs.nth(i);
         
         try {
-            await page.waitForSelector('a.oferta-link');
+    
             let href = await job.locator('a.oferta-link').first().getAttribute('href');
             
             linkVagas.push(href);
@@ -105,7 +105,7 @@ async function definirPesquisa(page){
     const zonaEscolhida =  zonas.find(zona=>zona.index == parseInt(escolhaZona))
     
     const escolhaChave = await fazerPergunta('Escolha uma palavra chave ex: Suporte, Vendas: ')
-    let chave = (await escolhaChave).replaceAll(' ','+')
+    let chave =  escolhaChave.replaceAll(' ','+')
     
  
     
@@ -199,7 +199,7 @@ async function acederVagasEGravarConteudos(context,linkVagas) {
 
 
 async function run() { 
-    
+    await fs.promises.mkdir('data', { recursive: true });
     const browser = await chromium.launch({ headless: false })
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -244,11 +244,8 @@ async function run() {
         console.log('Somente uma pagina foi encontrada');
         
     }
-
     
     //Faz um loop pelas paginas e coleta os links
-
-   
     
     console.log('Links coletados:', linkVagas);
 
