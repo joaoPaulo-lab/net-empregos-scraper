@@ -5,4 +5,4 @@ O programa acede ao website, pergunta ao utilizador os parametros da busca e faz
 
 Atenção: Favor não utilizar para pesquisas grandes e em seguida, isto pode prejudicar o tráfego do próprio website, já que o scraper acede aos links de forma muito rápida para obter as informações.
 
-Código para iniciar: node net-empregos-scrapper.mjs
+Código para iniciar: ./src node net-empregos-scrapper.mjs
