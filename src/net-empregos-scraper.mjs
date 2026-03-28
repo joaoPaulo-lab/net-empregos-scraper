@@ -7,7 +7,7 @@ import { stdin as input, stdout as output } from 'process';
 
 //É necessário fazer duas vezes o scrapping então fiz uma função
 //Faz scraping do texto dos options e valor das prop. values
-async function dropBoxScrapper(dropBox) {
+async function dropBoxScraper(dropBox) {
     let optionsAndValues = []
     let i = 0;
     //Scraping das opções de Categorias
@@ -81,8 +81,8 @@ async function definirPesquisa(page){
     const formChave = page.locator('#chaves');
     
     //Pega a lista de categorias e zonas
-    let categorias = await dropBoxScrapper(formCategorias);
-    let zonas = await dropBoxScrapper(formZonas);
+    let categorias = await dropBoxScraper(formCategorias);
+    let zonas = await dropBoxScraper(formZonas);
     
     //PERGUNTAS
     console.log('Categorias');
@@ -178,7 +178,7 @@ async function acederVagasEGravarConteudos(context,linkVagas) {
             //Todo, decidir o que fazer com os Jsons...
             // const jsonJob = JSON.parse(dadosJob);
 
-            fs.writeFileSync(`../data/vaga_${infoVagaUrl.ref}_${infoVagaUrl.nome}.json`, dadosJob);
+            fs.writeFileSync(`./data/vaga_${infoVagaUrl.ref}_${infoVagaUrl.nome}.json`, dadosJob);
 
             
         } catch (error) {
@@ -198,8 +198,10 @@ async function acederVagasEGravarConteudos(context,linkVagas) {
 }
 
 
-async function run() { 
-    await fs.promises.mkdir('../data', { recursive: true });
+export async function scraper() { 
+    //Cria a pasta data caso não exista.
+    await fs.promises.mkdir('./data', { recursive: true });
+
     const browser = await chromium.launch({ headless: false })
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -258,6 +260,3 @@ async function run() {
 
     return;
 }
-
-  
-run()
